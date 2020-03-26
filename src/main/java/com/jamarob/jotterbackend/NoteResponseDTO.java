@@ -1,11 +1,13 @@
 package com.jamarob.jotterbackend;
 
+import java.time.Instant;
+
 public class NoteResponseDTO {
 
     private String id;
     private String text;
-    private long created;
-    private long edited;
+    private Instant created;
+    private Instant edited;
 
     public NoteResponseDTO(Note note){
         this.id = note.getId();
@@ -22,11 +24,11 @@ public class NoteResponseDTO {
         return text;
     }
 
-    public long getCreated() {
+    public Instant getCreated() {
         return created;
     }
 
-    public long getEdited() {
+    public Instant getEdited() {
         return edited;
     }
 }

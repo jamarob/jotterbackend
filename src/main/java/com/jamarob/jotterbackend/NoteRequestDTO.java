@@ -1,19 +1,16 @@
 package com.jamarob.jotterbackend;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
+import java.time.Instant;
 
 public class NoteRequestDTO {
 
     @NotBlank
     private String text;
 
-    @Positive
-    private long created;
+    private Instant created;
 
-    @PositiveOrZero
-    private long edited;
+    private Instant edited;
 
     public String getText() {
         return text;
@@ -23,19 +20,19 @@ public class NoteRequestDTO {
         this.text = text;
     }
 
-    public long getCreated() {
+    public Instant getCreated() {
         return created;
     }
 
-    public void setCreated(long created) {
+    public void setCreated(Instant created) {
         this.created = created;
     }
 
-    public long getEdited() {
+    public Instant getEdited() {
         return edited;
     }
 
-    public void setEdited(long edited) {
+    public void setEdited(Instant edited) {
         this.edited = edited;
     }
 }

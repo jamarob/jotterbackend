@@ -3,7 +3,7 @@ package com.jamarob.jotterbackend;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.UUID;
+import java.time.Instant;
 
 @Document
 public class Note {
@@ -11,12 +11,10 @@ public class Note {
     @Id
     private String id;
     private String text;
-    private long created;
-    private long edited;
+    private Instant created;
+    private Instant edited;
 
-    public Note(){
-        this.id = UUID.randomUUID().toString();
-    }
+    public Note(){}
 
     public String getId(){
         return this.id;
@@ -30,19 +28,19 @@ public class Note {
         this.text = text;
     }
 
-    public long getCreated() {
+    public Instant getCreated() {
         return created;
     }
 
-    public void setCreated(long created) {
+    public void setCreated(Instant created) {
         this.created = created;
     }
 
-    public long getEdited() {
+    public Instant getEdited() {
         return edited;
     }
 
-    public void setEdited(long edited) {
+    public void setEdited(Instant edited) {
         this.edited = edited;
     }
 }

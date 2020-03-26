@@ -3,6 +3,7 @@ package com.jamarob.jotterbackend;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,11 +14,6 @@ public class NoteController {
 
     public NoteController(NoteRepository repository){
         this.repository = repository;
-    }
-
-    @GetMapping("/ping")
-    public String ping(){
-        return "pong";
     }
 
     @GetMapping("/notes")
@@ -39,42 +35,40 @@ public class NoteController {
             note.setEdited(ndto.getEdited());
             return note;
         }).collect(Collectors.toList());
-        this.repository.saveAll(notes);
-        return notes.stream().map(NoteResponseDTO::new).collect(Collectors.toList());
+        List<Note> savedNotes = this.repository.saveAll(notes);
+        return savedNotes.stream().map(NoteResponseDTO::new).collect(Collectors.toList());
     }
 
     @PostMapping("/notes")
     public NoteResponseDTO createNote(@RequestBody @Valid NoteRequestDTO dto){
         Note note = new Note();
         note.setText(dto.getText());
-        long now = System.currentTimeMillis();
+        Instant now = Instant.now();
         note.setCreated(now);
         note.setEdited(now);
-        repository.save(note);
-        return new NoteResponseDTO((note));
+        Note savedNote = this.repository.save(note);
+        return new NoteResponseDTO(savedNote);
     }
 
     @GetMapping("/note/{id}")
     public NoteResponseDTO getNote(@PathVariable String id){
-        Note note = this.repository.findById(id).orElseThrow(RuntimeException::new);
+        Note note = this.repository.findById(id).orElseThrow(NoteNotFoundException::new);
         return new NoteResponseDTO(note);
     }
 
     @PutMapping("/note/{id}")
-    public NoteResponseDTO updateNote(@PathVariable String id, @RequestBody @Valid NoteRequestDTO dto){
-        Note note = this.repository.findById(id).orElseThrow(RuntimeException::new);
+    public NoteResponseDTO updateNoteText(@PathVariable String id, @RequestBody @Valid NoteRequestDTO dto){
+        Note note = this.repository.findById(id).orElseThrow(NoteNotFoundException::new);
         note.setText(dto.getText());
-        note.setCreated((dto.getCreated()));
-        note.setEdited(dto.getEdited());
-        this.repository.save(note);
-        return new NoteResponseDTO(note);
+        note.setEdited(Instant.now());
+        Note updatedNote = this.repository.save(note);
+        return new NoteResponseDTO(updatedNote);
     }
 
     @DeleteMapping("/note/{id}")
-    public NoteResponseDTO deleteNote(@PathVariable String id){
-        Note note = this.repository.findById(id).orElseThrow(RuntimeException::new);
+    public void deleteNote(@PathVariable String id){
+        Note note = this.repository.findById(id).orElseThrow(NoteNotFoundException::new);
         this.repository.delete(note);
-        return new NoteResponseDTO(note);
     }
 
 }

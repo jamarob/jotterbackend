@@ -22,6 +22,7 @@ public class NoteController {
     public List<NoteResponseDTO> getNotes(){
         return this.repository
                 .findAll().stream()
+                .sorted()
                 .map(NoteResponseDTO::new)
                 .collect(Collectors.toList());
     }
@@ -38,6 +39,7 @@ public class NoteController {
         }).collect(Collectors.toList());
         List<Note> savedNotes = this.repository.saveAll(notes);
         return savedNotes.stream()
+                .sorted()
                 .map(NoteResponseDTO::new)
                 .collect(Collectors.toList());
     }

@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.Instant;
 
 @Document
-public class Note {
+public class Note implements Comparable<Note>{
 
     @Id
     private String id;
@@ -42,5 +42,10 @@ public class Note {
 
     public void setEdited(Instant edited) {
         this.edited = edited;
+    }
+
+    @Override
+    public int compareTo(Note other) {
+        return other.created.compareTo(this.created);
     }
 }

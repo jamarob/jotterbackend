@@ -4,10 +4,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.Instant;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class NoteController {
 
     private NoteRepository repository;
@@ -19,8 +21,7 @@ public class NoteController {
     @GetMapping("/notes")
     public List<NoteResponseDTO> getNotes(){
         return this.repository
-                .findAll()
-                .stream()
+                .findAll().stream()
                 .map(NoteResponseDTO::new)
                 .collect(Collectors.toList());
     }
@@ -36,7 +37,9 @@ public class NoteController {
             return note;
         }).collect(Collectors.toList());
         List<Note> savedNotes = this.repository.saveAll(notes);
-        return savedNotes.stream().map(NoteResponseDTO::new).collect(Collectors.toList());
+        return savedNotes.stream()
+                .map(NoteResponseDTO::new)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/notes")

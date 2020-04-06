@@ -5,6 +5,25 @@
 
 This is the REST backend for [Jotter](https://github.com/jamarob/jotter), my final project from the [neuefische bootcamp](https://www.neuefische.de/).
 
+## Try it out!
+**Make shure you have Java 13 installed and MongoDB running**
+
+Clone this repo, go to your terminal and run
+
+`$ java -jar jar/jotterbackend.jar`
+
+to start the default server on `localhost:8080`. 
+
+By default a db named `jotter` is used. If you wish you can alter the DB name by running
+
+`$ java -jar -Dspring.profiles.active=test jar/jotterbackend.jar`
+
+or 
+
+`$ java -jar -Dspring.profiles.active=dev jar/jotterbackend.jar`
+
+to use db `jotter-test` or `jotter-dev` instead.
+
 ## Available routes
 
 | Method | URL      | Purpose            |
